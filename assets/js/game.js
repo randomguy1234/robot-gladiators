@@ -1,38 +1,54 @@
+var fightOrSkip= function()
+{
+    // ask player if they'd like to fight or skip using fightOrSkip function
+    var promptFight= window.prompt('Would you like to FIGHT or SKIP' 
+        +' this battle? Enter "FIGHT" or "SKIP" to choose.');
+    
+    if (promptFight === "" || promptFight === null)
+    {
+        window.alert("You need to provide a valid answer! Please try again.");
+        return fightOrSkip();
+    }
+    
+    // if player picks "skip" confirm and then stop the loop
+    promptFight = promptFight.toLowerCase();
+    if (promptFight === "skip")
+    {
+        // confirm player wants to skip
+        var confirmSkip= window.confirm("Are you sure you'd like to quit?");
+
+        // if yes (true), leave fight
+        if (confirmSkip)
+        {
+            window.alert(playerInfo.name+" has decided to skip this fight. Goodbye!");
+            // subtract money from playerMoney for skipping
+            playerInfo.money= Math.max(0, playerInfo.money - 10);
+            return true;
+            
+        }
+
+        return false;
+    }
+}
+
+
 var fight= function(enemy){
     
 
     while (playerInfo.health > 0 && enemy.health > 0)
     {
-        var promptFight= window.prompt("Would you like to FIGHT or SKIP this battle?"
-        +" Enter 'FIGHT' or 'SKIP' to choose.");
-    
-        //if player picks skip, confirm and then stop the loop
-        if (promptFight === "skip" || promptFight === "SKIP")
-        {
-            //confirm player wants to quit
-            var confirmSkip= window.confirm("Are you sure you'd like to quit?");
-
-            //if yes(true), leave fight
-            if(confirmSkip)
-            {
-                window.alert(playerInfo.name+" has decided to skip this fight. Goodbye!");
-                
-                //subtract money from playerMoney for skipping
-                playerInfo.money= Math.max(0, playerInfo.money -10);
-                console.log("playerMoney",playerInfo.money);
-                break;
-            } 
-        }
-
         
-        /*remove enemy's health by subtracting the amount set in the playerAttack variable */
-        // generate random damage value based on player's attack power
+        if (fightOrSkip())
+        {
+            // if true, leave fight by breaking loop
+            break;
+        }
         var damage= randomNumber(playerInfo.attack - 3, playerInfo.attack);
 
         enemy.health= Math.max(0, enemy.health - damage);
         
         console.log(playerInfo.name+" attacked "+enemy.name+". "+enemy.name+" now has "+enemy.health
-        +" health remaining.");
+            +" health remaining.");
 
         //check enemy's health
         if (enemy.health <= 0)
@@ -57,7 +73,7 @@ var fight= function(enemy){
         playerInfo.health= Math.max(0, playerInfo.health - damage);
 
         console.log(enemy.name+" attacked "+playerInfo.name+" . "+playerInfo.name+" now has "
-        +playerInfo.health+" health remaining.");
+            +playerInfo.health+" health remaining.");
             
 
         //check player's health
@@ -77,8 +93,6 @@ var fight= function(enemy){
         
     }
 };
-
-//fight();
 
 
 var startGame = function()
@@ -111,7 +125,7 @@ var startGame = function()
             {
                 // ask if player wants to use the store before next round
                 var storeConfirm= window.confirm("The fight is over, visit "
-                +"the store before the next round?");
+                    +"the store before the next round?");
                 
                 // if yes, take them to the store() function
                 if (storeConfirm)
@@ -169,8 +183,8 @@ var shop= function()
 {
     // ask player what they'd like to do
     var shopOptionPrompt= window.prompt("Would you like to REFILL your health, "
-    +"UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE',"
-    +" or 'LEAVE' to make a choice.");
+        +"UPGRADE your attack, or LEAVE the store? Please enter one: 'REFILL', 'UPGRADE',"
+        +" or 'LEAVE' to make a choice.");
 
 
     // use switch to carry out action
